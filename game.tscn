@@ -1,0 +1,236 @@
+[gd_scene load_steps=11 format=3 uid="uid://cym7s2nqva7gb"]
+
+[ext_resource type="Script" path="res://make_default_settings.gd" id="1_chrkm"]
+[ext_resource type="Script" path="res://load_settings.gd" id="1_nat7f"]
+[ext_resource type="Theme" uid="uid://w0rkil7b8h3w" path="res://gaming_theme.tres" id="3_lppsj"]
+[ext_resource type="Script" path="res://ui_states.gd" id="3_y3yrv"]
+[ext_resource type="FontFile" uid="uid://d1tb45u0aewd2" path="res://swera_font/swera-demo.bold.otf" id="4_cynes"]
+[ext_resource type="Script" path="res://settings_handler.gd" id="6_ljrbi"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_x3fse"]
+device = -1
+keycode = 4194319
+
+[sub_resource type="InputEventKey" id="InputEventKey_16o6y"]
+device = -1
+keycode = 4194321
+
+[sub_resource type="InputEventKey" id="InputEventKey_vegal"]
+device = -1
+keycode = 4194320
+
+[sub_resource type="InputEventKey" id="InputEventKey_vtdux"]
+device = -1
+keycode = 4194322
+
+[node name="Main" type="Node"]
+
+[node name="Settings" type="Node" parent="."]
+script = ExtResource("1_nat7f")
+
+[node name="make_default_settings" type="Node" parent="Settings"]
+script = ExtResource("1_chrkm")
+key_move_left = SubResource("InputEventKey_x3fse")
+key_move_right = SubResource("InputEventKey_16o6y")
+key_move_forward = SubResource("InputEventKey_vegal")
+key_move_backward = SubResource("InputEventKey_vtdux")
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_y3yrv")
+metadata/_edit_use_anchors_ = true
+
+[node name="SettingsMenu" type="MarginContainer" parent="ui"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_lppsj")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Settings Menu subelement" type="PanelContainer" parent="ui/SettingsMenu"]
+layout_mode = 2
+theme = ExtResource("3_lppsj")
+
+[node name="MarginContainer" type="MarginContainer" parent="ui/SettingsMenu/Settings Menu subelement"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+theme_override_fonts/font = ExtResource("4_cynes")
+text = "> Settings <"
+horizontal_alignment = 1
+
+[node name="settings_handler" type="TabContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("6_ljrbi")
+
+[node name="Keybinds" type="MarginContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="list" type="GridContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds"]
+layout_mode = 2
+size_flags_stretch_ratio = 20.0
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label3" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move forward "
+
+[node name="move_forward" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Label" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move left "
+
+[node name="move_left" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Label4" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move backward"
+
+[node name="move_backward" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Label2" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move right "
+
+[node name="move_right" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Music and Sounds" type="MarginContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="list" type="GridContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds"]
+layout_mode = 2
+size_flags_stretch_ratio = 20.0
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+layout_mode = 2
+text = "Master volume"
+
+[node name="master" type="HSlider" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 1.0
+
+[node name="Label2" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+layout_mode = 2
+text = "Music"
+
+[node name="music" type="HSlider" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 1.0
+
+[node name="PauseMenu" type="PanelContainer" parent="ui"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.8
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_lppsj")
+
+[node name="MarginContainer" type="MarginContainer" parent="ui/PauseMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/PauseMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+theme_override_fonts/font = ExtResource("4_cynes")
+text = "> SPACE GAMING <"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="buttons" type="VBoxContainer" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+theme_override_constants/separation = 20
+
+[node name="Resume" type="Button" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Resume"
+
+[node name="Settings" type="Button" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Settings"
+
+[node name="Save and quit" type="Button" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Save and quit"
+
+[connection signal="settings_ready" from="Settings" to="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler" method="_on_settings_settings_ready"]
+[connection signal="pressed" from="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons/Settings" to="ui" method="_on_settings_pressed"]

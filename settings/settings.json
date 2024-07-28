@@ -1,0 +1,12 @@
+{
+	"keybinds": {
+		"move_backward": 83,
+		"move_forward": 87,
+		"move_left": 65,
+		"move_right": 68
+	},
+	"sound_settings": {
+		"master": 1,
+		"music": 0.507462685121529
+	}
+}
