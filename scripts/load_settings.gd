@@ -3,7 +3,7 @@ extends Node
 var settings : Dictionary
 signal settings_ready
 
-func fill_settings(settings: Dictionary, defaults: Dictionary):
+func fill_settings(settings: Dictionary, defaults: Dictionary) -> void:
 	for i in defaults.keys():
 		if not settings.has(i):
 			settings[i] = defaults[i]
@@ -11,11 +11,11 @@ func fill_settings(settings: Dictionary, defaults: Dictionary):
 			if typeof(defaults[i]) == TYPE_DICTIONARY:
 				fill_settings(settings[i], defaults[i])
 
-func pass_settings():
+func pass_settings() -> Dictionary:
 	return settings
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 
 	var defaults_node = get_node("make_default_settings")
 	var defaults : Dictionary = defaults_node.settings
@@ -33,8 +33,6 @@ func _ready():
 	#save settings into file
 	if  not a == JSON.stringify(settings, "    "):
 		FileAccess.open("res://settings/settings.json", FileAccess.WRITE).store_string(JSON.stringify(settings, "    "))
+	
+	await get_tree().process_frame
 	settings_ready.emit()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

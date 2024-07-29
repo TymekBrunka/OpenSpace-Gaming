@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://cym7s2nqva7gb"]
+[gd_scene load_steps=13 format=3 uid="uid://cym7s2nqva7gb"]
 
-[ext_resource type="Script" path="res://make_default_settings.gd" id="1_chrkm"]
-[ext_resource type="Script" path="res://load_settings.gd" id="1_nat7f"]
+[ext_resource type="Script" path="res://scripts/make_default_settings.gd" id="1_chrkm"]
+[ext_resource type="Script" path="res://scripts/load_settings.gd" id="1_nat7f"]
 [ext_resource type="Theme" uid="uid://w0rkil7b8h3w" path="res://gaming_theme.tres" id="3_lppsj"]
-[ext_resource type="Script" path="res://ui_states.gd" id="3_y3yrv"]
+[ext_resource type="Script" path="res://scripts/ui_states.gd" id="3_y3yrv"]
 [ext_resource type="FontFile" uid="uid://d1tb45u0aewd2" path="res://swera_font/swera-demo.bold.otf" id="4_cynes"]
-[ext_resource type="Script" path="res://settings_handler.gd" id="6_ljrbi"]
+[ext_resource type="Script" path="res://scripts/settings_handler.gd" id="6_ljrbi"]
+[ext_resource type="Script" path="res://custom_nodes/settings_slider.gd" id="7_1molv"]
+[ext_resource type="Texture2D" uid="uid://b5b68d7lppg3d" path="res://space_gaming_2_big.png" id="7_sh7j8"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_x3fse"]
 device = -1
@@ -46,6 +48,7 @@ script = ExtResource("3_y3yrv")
 metadata/_edit_use_anchors_ = true
 
 [node name="SettingsMenu" type="MarginContainer" parent="ui"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,21 +63,21 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Settings Menu subelement" type="PanelContainer" parent="ui/SettingsMenu"]
+[node name="sub" type="PanelContainer" parent="ui/SettingsMenu"]
 layout_mode = 2
 theme = ExtResource("3_lppsj")
 
-[node name="MarginContainer" type="MarginContainer" parent="ui/SettingsMenu/Settings Menu subelement"]
+[node name="sub2" type="MarginContainer" parent="ui/SettingsMenu/sub"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer"]
+[node name="sub3" type="VBoxContainer" parent="ui/SettingsMenu/sub/sub2"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
@@ -82,13 +85,12 @@ theme_override_fonts/font = ExtResource("4_cynes")
 text = "> Settings <"
 horizontal_alignment = 1
 
-[node name="settings_handler" type="TabContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer"]
+[node name="settings_handler" type="TabContainer" parent="ui/SettingsMenu/sub/sub2/sub3"]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_ljrbi")
 
-[node name="Keybinds" type="MarginContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler"]
-visible = false
+[node name="Keybinds" type="MarginContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -96,46 +98,47 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="list" type="GridContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds"]
+[node name="list" type="GridContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds"]
 layout_mode = 2
 size_flags_stretch_ratio = 20.0
 theme_override_constants/h_separation = 30
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="Label3" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="Label3" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = "move forward "
 
-[node name="move_forward" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="move_forward" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = " NOT BOUND "
 
-[node name="Label" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="Label" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = "move left "
 
-[node name="move_left" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="move_left" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = " NOT BOUND "
 
-[node name="Label4" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="Label4" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = "move backward"
 
-[node name="move_backward" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="move_backward" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = " NOT BOUND "
 
-[node name="Label2" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="Label2" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = "move right "
 
-[node name="move_right" type="Button" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Keybinds/list"]
+[node name="move_right" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
 layout_mode = 2
 text = " NOT BOUND "
 
-[node name="Music and Sounds" type="MarginContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler"]
+[node name="Music and Sounds" type="MarginContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -143,37 +146,40 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="list" type="GridContainer" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds"]
+[node name="list" type="GridContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds"]
 layout_mode = 2
 size_flags_stretch_ratio = 20.0
 theme_override_constants/h_separation = 30
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="Label" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+[node name="Label" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
 layout_mode = 2
 text = "Master volume"
 
-[node name="master" type="HSlider" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+[node name="master_slider" type="HSlider" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
 custom_minimum_size = Vector2(150, 30)
 layout_mode = 2
 max_value = 1.0
-step = 0.0
-value = 1.0
+step = 0.1
+script = ExtResource("7_1molv")
+container = "sound_settings"
+key = "master"
 
-[node name="Label2" type="Label" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+[node name="Label2" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
 layout_mode = 2
 text = "Music"
 
-[node name="music" type="HSlider" parent="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler/Music and Sounds/list"]
+[node name="music_slider" type="HSlider" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
 custom_minimum_size = Vector2(150, 30)
 layout_mode = 2
 max_value = 1.0
-step = 0.0
-value = 1.0
+step = 0.1
+script = ExtResource("7_1molv")
+container = "sound_settings"
+key = "music"
 
 [node name="PauseMenu" type="PanelContainer" parent="ui"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.2
@@ -194,14 +200,13 @@ theme_override_constants/margin_bottom = 25
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/PauseMenu/MarginContainer"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(156, 68)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
-theme_override_fonts/font = ExtResource("4_cynes")
-text = "> SPACE GAMING <"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("7_sh7j8")
+stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -232,5 +237,5 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Save and quit"
 
-[connection signal="settings_ready" from="Settings" to="ui/SettingsMenu/Settings Menu subelement/MarginContainer/VBoxContainer/settings_handler" method="_on_settings_settings_ready"]
+[connection signal="settings_ready" from="Settings" to="ui/SettingsMenu/sub/sub2/sub3/settings_handler" method="_on_settings_settings_ready"]
 [connection signal="pressed" from="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons/Settings" to="ui" method="_on_settings_pressed"]

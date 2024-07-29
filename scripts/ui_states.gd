@@ -8,16 +8,17 @@ enum {
 }
 
 var page = PAGE_NONE
-var pmenu : PanelContainer
-var smenu : MarginContainer
+var pmenu : Container
+var smenu : Container
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _ready():
+func _ready() -> void:
 	pmenu = get_node("PauseMenu")
 	smenu = get_node("SettingsMenu")
 	pmenu.visible = false
 	smenu.visible = false
+	get_node(".").visible = true #prevents confusion
 
-func _process(delta):
+func _process(delta) -> void:
 	
 	if Input.is_action_just_pressed("toggle_pause_menu"):
 		if page == PAGE_NONE:
@@ -34,7 +35,7 @@ func _process(delta):
 			page = PAGE_PAUSE
 
 
-func _on_settings_pressed():
+func _on_settings_pressed() -> void:
 	page = PAGE_SETTINGS
 	pmenu.visible = false
 	smenu.visible = true
