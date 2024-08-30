@@ -1,31 +1,66 @@
-[gd_scene load_steps=13 format=3 uid="uid://cym7s2nqva7gb"]
+[gd_scene load_steps=23 format=3 uid="uid://cym7s2nqva7gb"]
 
 [ext_resource type="Script" path="res://scripts/make_default_settings.gd" id="1_chrkm"]
 [ext_resource type="Script" path="res://scripts/load_settings.gd" id="1_nat7f"]
 [ext_resource type="Theme" uid="uid://w0rkil7b8h3w" path="res://gaming_theme.tres" id="3_lppsj"]
 [ext_resource type="Script" path="res://scripts/ui_states.gd" id="3_y3yrv"]
+[ext_resource type="Texture2D" uid="uid://db2cldhywuxbq" path="res://game_assets/textures/player/player_sprite.svg" id="4_383u0"]
 [ext_resource type="FontFile" uid="uid://d1tb45u0aewd2" path="res://swera_font/swera-demo.bold.otf" id="4_cynes"]
+[ext_resource type="Script" path="res://scripts/CanvasLayerFix.gd" id="5_xil7m"]
 [ext_resource type="Script" path="res://scripts/settings_handler.gd" id="6_ljrbi"]
 [ext_resource type="Script" path="res://custom_nodes/settings_slider.gd" id="7_1molv"]
 [ext_resource type="Texture2D" uid="uid://b5b68d7lppg3d" path="res://space_gaming_2_big.png" id="7_sh7j8"]
+[ext_resource type="Script" path="res://custom_nodes/spaceship_player.gd" id="9_kriel"]
+[ext_resource type="Texture2D" uid="uid://deryiyrl383h" path="res://backgrounds/tilemap.png" id="12_e85h0"]
+[ext_resource type="Shader" path="res://shaders/pixelize2.gdshader" id="12_qf3bn"]
+[ext_resource type="Script" path="res://scripts/BackgroundEngine.gd" id="13_xx3qu"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_x3fse"]
 device = -1
-keycode = 4194319
+keycode = 65
+unicode = 97
 
 [sub_resource type="InputEventKey" id="InputEventKey_16o6y"]
 device = -1
-keycode = 4194321
+keycode = 68
+unicode = 100
 
 [sub_resource type="InputEventKey" id="InputEventKey_vegal"]
 device = -1
-keycode = 4194320
+keycode = 87
+unicode = 119
 
 [sub_resource type="InputEventKey" id="InputEventKey_vtdux"]
 device = -1
-keycode = 4194322
+keycode = 83
+unicode = 115
 
-[node name="Main" type="Node"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80w12"]
+size = Vector2(4089.87, 113)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_amxoi"]
+resource_name = "pixelize"
+shader = ExtResource("12_qf3bn")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ivfkg"]
+resource_name = "background"
+texture = ExtResource("12_e85h0")
+texture_region_size = Vector2i(960, 720)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_7mjj1"]
+tile_size = Vector2i(960, 720)
+sources/0 = SubResource("TileSetAtlasSource_ivfkg")
+
+[node name="Main" type="Node2D"]
 
 [node name="Settings" type="Node" parent="."]
 script = ExtResource("1_nat7f")
@@ -37,7 +72,32 @@ key_move_right = SubResource("InputEventKey_16o6y")
 key_move_forward = SubResource("InputEventKey_vegal")
 key_move_backward = SubResource("InputEventKey_vtdux")
 
-[node name="ui" type="Control" parent="."]
+[node name="Game" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Game"]
+rotation = 0.00194861
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/StaticBody2D"]
+position = Vector2(542.591, 299.5)
+shape = SubResource("RectangleShape2D_80w12")
+
+[node name="Player" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("camera")]
+process_mode = 1
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("9_kriel")
+sprit = ExtResource("4_383u0")
+main = true
+camera = NodePath("Camera2D")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Game/Player" node_paths=PackedStringArray("player")]
+follow_viewport_enabled = true
+script = ExtResource("5_xil7m")
+player = NodePath("..")
+
+[node name="ui" type="Control" parent="Game/Player/CanvasLayer"]
+process_mode = 3
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,139 +107,7 @@ grow_vertical = 2
 script = ExtResource("3_y3yrv")
 metadata/_edit_use_anchors_ = true
 
-[node name="SettingsMenu" type="MarginContainer" parent="ui"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.0
-offset_right = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("3_lppsj")
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="sub" type="PanelContainer" parent="ui/SettingsMenu"]
-layout_mode = 2
-theme = ExtResource("3_lppsj")
-
-[node name="sub2" type="MarginContainer" parent="ui/SettingsMenu/sub"]
-layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="sub3" type="VBoxContainer" parent="ui/SettingsMenu/sub/sub2"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3"]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.2
-theme_override_fonts/font = ExtResource("4_cynes")
-text = "> Settings <"
-horizontal_alignment = 1
-
-[node name="settings_handler" type="TabContainer" parent="ui/SettingsMenu/sub/sub2/sub3"]
-layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("6_ljrbi")
-
-[node name="Keybinds" type="MarginContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="list" type="GridContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds"]
-layout_mode = 2
-size_flags_stretch_ratio = 20.0
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 10
-columns = 2
-
-[node name="Label3" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = "move forward "
-
-[node name="move_forward" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = " NOT BOUND "
-
-[node name="Label" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = "move left "
-
-[node name="move_left" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = " NOT BOUND "
-
-[node name="Label4" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = "move backward"
-
-[node name="move_backward" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = " NOT BOUND "
-
-[node name="Label2" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = "move right "
-
-[node name="move_right" type="Button" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
-layout_mode = 2
-text = " NOT BOUND "
-
-[node name="Music and Sounds" type="MarginContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="list" type="GridContainer" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds"]
-layout_mode = 2
-size_flags_stretch_ratio = 20.0
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 10
-columns = 2
-
-[node name="Label" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
-layout_mode = 2
-text = "Master volume"
-
-[node name="master_slider" type="HSlider" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
-custom_minimum_size = Vector2(150, 30)
-layout_mode = 2
-max_value = 1.0
-step = 0.1
-script = ExtResource("7_1molv")
-container = "sound_settings"
-key = "master"
-
-[node name="Label2" type="Label" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
-layout_mode = 2
-text = "Music"
-
-[node name="music_slider" type="HSlider" parent="ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
-custom_minimum_size = Vector2(150, 30)
-layout_mode = 2
-max_value = 1.0
-step = 0.1
-script = ExtResource("7_1molv")
-container = "sound_settings"
-key = "music"
-
-[node name="PauseMenu" type="PanelContainer" parent="ui"]
+[node name="PauseMenu" type="PanelContainer" parent="Game/Player/CanvasLayer/ui"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.2
@@ -190,17 +118,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_lppsj")
 
-[node name="MarginContainer" type="MarginContainer" parent="ui/PauseMenu"]
+[node name="MarginContainer" type="MarginContainer" parent="Game/Player/CanvasLayer/ui/PauseMenu"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/PauseMenu/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(156, 68)
 layout_mode = 2
 size_flags_vertical = 3
@@ -208,7 +136,7 @@ size_flags_stretch_ratio = 0.2
 texture = ExtResource("7_sh7j8")
 stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="ui/PauseMenu/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -216,26 +144,172 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="buttons" type="VBoxContainer" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="buttons" type="VBoxContainer" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 20.0
 theme_override_constants/separation = 20
 
-[node name="Resume" type="Button" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
+[node name="Resume" type="Button" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Resume"
 
-[node name="Settings" type="Button" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
+[node name="Settings" type="Button" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Settings"
 
-[node name="Save and quit" type="Button" parent="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
+[node name="Save and quit" type="Button" parent="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Save and quit"
 
-[connection signal="settings_ready" from="Settings" to="ui/SettingsMenu/sub/sub2/sub3/settings_handler" method="_on_settings_settings_ready"]
-[connection signal="pressed" from="ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons/Settings" to="ui" method="_on_settings_pressed"]
+[node name="SettingsMenu" type="MarginContainer" parent="Game/Player/CanvasLayer/ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_lppsj")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="sub" type="PanelContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu"]
+layout_mode = 2
+theme = ExtResource("3_lppsj")
+
+[node name="sub2" type="MarginContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="sub3" type="VBoxContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+theme_override_fonts/font = ExtResource("4_cynes")
+text = "> Settings <"
+horizontal_alignment = 1
+
+[node name="settings_handler" type="TabContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("6_ljrbi")
+
+[node name="Keybinds" type="MarginContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="list" type="GridContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds"]
+layout_mode = 2
+size_flags_stretch_ratio = 20.0
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label3" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move forward "
+
+[node name="move_forward" type="Button" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Label" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move left "
+
+[node name="move_left" type="Button" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Label4" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move backward"
+
+[node name="move_backward" type="Button" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Label2" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = "move right "
+
+[node name="move_right" type="Button" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Keybinds/list"]
+layout_mode = 2
+text = " NOT BOUND "
+
+[node name="Music and Sounds" type="MarginContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="list" type="GridContainer" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds"]
+layout_mode = 2
+size_flags_stretch_ratio = 20.0
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
+layout_mode = 2
+text = "Master volume"
+
+[node name="master_slider" type="HSlider" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+script = ExtResource("7_1molv")
+container = "sound_settings"
+key = "master"
+
+[node name="Label2" type="Label" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
+layout_mode = 2
+text = "Music"
+
+[node name="music_slider" type="HSlider" parent="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler/Music and Sounds/list"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+script = ExtResource("7_1molv")
+container = "sound_settings"
+key = "music"
+
+[node name="Camera2D" type="Camera2D" parent="Game/Player"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Game"]
+material = SubResource("ShaderMaterial_amxoi")
+texture = ExtResource("4_383u0")
+
+[node name="background" type="ParallaxBackground" parent="Game"]
+
+[node name="TileMap" type="TileMap" parent="Game/background" node_paths=PackedStringArray("player")]
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_7mjj1")
+format = 2
+script = ExtResource("13_xx3qu")
+player = NodePath("../../Player")
+
+[connection signal="settings_ready" from="Settings" to="Game/Player/CanvasLayer/ui/SettingsMenu/sub/sub2/sub3/settings_handler" method="_on_settings_settings_ready"]
+[connection signal="pressed" from="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons/Resume" to="Game/Player/CanvasLayer/ui" method="_on_resume_pressed"]
+[connection signal="pressed" from="Game/Player/CanvasLayer/ui/PauseMenu/MarginContainer/VBoxContainer/MarginContainer/buttons/Settings" to="Game/Player/CanvasLayer/ui" method="_on_settings_pressed"]

@@ -17,6 +17,7 @@ signal SaveSettings
 signal UpdatedKeybinds
 signal KeybindsReady
 signal LoadedSettings
+
 func pass_keybinds():
 	return Keybinds
 
@@ -64,7 +65,7 @@ func SetKeyBind(id: String, button: Button) -> void:
 	#var b = await SetTheKey
 
 func _on_settings_settings_ready() -> void:
-	Settings = get_node("../../../../../../Settings").pass_settings()
+	Settings = get_node("../../../../../../../../../Settings").pass_settings()
 	LoadedSettings.emit()
 	
 	for i in Settings["keybinds"]:
@@ -77,6 +78,8 @@ func _on_settings_settings_ready() -> void:
 		bindbutton.text = " " + bind.as_text_keycode() + " "
 		#Keybinds_buttons[i] = bindbutton
 		bindbutton.pressed.connect(SetKeyBind.bind(i, bindbutton))
+	get_tree().process_frame
+	UpdatedKeybinds.emit()
 	
 func _input(event) -> void:
 	if AwaitingButton != null or AwaitingBId != "":
@@ -89,3 +92,4 @@ func _input(event) -> void:
 			
 			AwaitingBId = ""
 			AwaitingButton = null
+			UpdatedKeybinds.emit()

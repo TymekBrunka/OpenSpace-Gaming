@@ -7,6 +7,6 @@
     },
     "sound_settings": {
         "master": 1,
-        "music": 1
+        "music": 0.5
     }
 }
