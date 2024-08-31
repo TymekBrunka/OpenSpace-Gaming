@@ -49,9 +49,9 @@ func _ready() -> void:
 	sprite.texture = sprit
 	sprite.scale = spriteScale
 	
-	var pixelize = ShaderMaterial.new()
-	pixelize.shader = pixelize_shader
-	sprite.material = pixelize
+	#var pixelize = ShaderMaterial.new()
+	#pixelize.shader = pixelize_shader
+	#sprite.material = pixelize
 	
 	self.add_child(sprite)
 	col = CollisionShape2D.new()
