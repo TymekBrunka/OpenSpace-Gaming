@@ -41,6 +41,9 @@ var boosting : bool
 var waiting_for_boosting = WAITING_FOR_W
 var last_double_w : float
 
+var fly_audio: AudioStreamPlayer2D;
+var boost_audio: AudioStreamPlayer2D;
+
 func _ready() -> void:
 	speed = max_speed
 	headers = settings_headers.new(self)
@@ -59,6 +62,16 @@ func _ready() -> void:
 	col.shape.height = colisionBox.y
 	col.shape.radius = colisionBox.x
 	self.add_child(col)
+	
+	if main:
+		var soundsP = get_node("/root/Main/Settings/sounds")
+		fly_audio = AudioStreamPlayer2D.new()
+		fly_audio.stream = soundsP.player_fly
+		self.add_child(fly_audio)
+		
+		boost_audio = AudioStreamPlayer2D.new()
+		boost_audio.stream = soundsP.player_boost
+		self.add_child(boost_audio)
 
 func UpdateKeybinds() -> void:
 	keybinds = headers.SH.pass_keybinds()
@@ -101,6 +114,8 @@ func _process(delta) -> void:
 			
 		#camera.position = Vector2(0, (-500 * velocity.length() / boost_speed))
 		camera.position = velocity.rotated(-rotation) * 100 / boost_speed
+		
+		fly_audio.pitch_scale = velocity.length() / 300
 	
 func bounce_and_slide(velocity: Vector2, normal: Vector2, bounce_factor: float) -> Vector2:
 	# Ensure the bounce factor is clamped between 0 and 1
@@ -140,11 +155,15 @@ func _physics_process(delta):
 func accelerate_forward(delta: float):
 	velocity += Vector2(0, -forward_backward * linear_acceleration * delta).rotated(rotation)
 	
+	if forward_backward != 0 && !fly_audio.playing:
+		fly_audio.play()
+	
 	if boosting:
 		speed = boost_speed
 		velocity += Vector2(0, -boost_speed).rotated(rotation)
+		boost_audio.play()
 		boosting = false
-	velocity.limit_length(speed)
+	#velocity.limit_length(speed)
 
 func slow_down_and_stop(delta: float):
 		# slow down
@@ -155,10 +174,13 @@ func slow_down_and_stop(delta: float):
 		elif speed < max_speed:
 			speed = max_speed
 		# stop
-		if velocity.y >= -0.1 && velocity.y <= 0.1:
+		if velocity.y >= -0.5 && velocity.y <= 0.5:
 			velocity.y = 0
-		if velocity.x >= -0.1 && velocity.x <= 0.1:
+		if velocity.x >= -0.5 && velocity.x <= 0.5:
 			velocity.x = 0
+			
+		if velocity.length() < 100:
+			fly_audio.stop()
 			
 		if velocity.length() > speed:
 			velocity = velocity.normalized() * speed

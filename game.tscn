@@ -1,11 +1,14 @@
-[gd_scene load_steps=23 format=3 uid="uid://cym7s2nqva7gb"]
+[gd_scene load_steps=26 format=3 uid="uid://cym7s2nqva7gb"]
 
 [ext_resource type="Script" path="res://scripts/make_default_settings.gd" id="1_chrkm"]
 [ext_resource type="Script" path="res://scripts/load_settings.gd" id="1_nat7f"]
 [ext_resource type="Theme" uid="uid://w0rkil7b8h3w" path="res://gaming_theme.tres" id="3_lppsj"]
+[ext_resource type="Script" path="res://sounds.gd" id="3_rnwoo"]
 [ext_resource type="Script" path="res://scripts/ui_states.gd" id="3_y3yrv"]
 [ext_resource type="Texture2D" uid="uid://db2cldhywuxbq" path="res://game_assets/textures/player/player_sprite.svg" id="4_383u0"]
 [ext_resource type="FontFile" uid="uid://d1tb45u0aewd2" path="res://swera_font/swera-demo.bold.otf" id="4_cynes"]
+[ext_resource type="AudioStream" uid="uid://bbp8ac2a7u80p" path="res://game_assets/sounds/Thruster.wav" id="4_nfqpe"]
+[ext_resource type="AudioStream" uid="uid://bxe76k7n3uloo" path="res://game_assets/sounds/Boost.wav" id="4_qt7a8"]
 [ext_resource type="Script" path="res://scripts/CanvasLayerFix.gd" id="5_xil7m"]
 [ext_resource type="Script" path="res://scripts/settings_handler.gd" id="6_ljrbi"]
 [ext_resource type="Script" path="res://custom_nodes/settings_slider.gd" id="7_1molv"]
@@ -71,6 +74,11 @@ key_move_left = SubResource("InputEventKey_x3fse")
 key_move_right = SubResource("InputEventKey_16o6y")
 key_move_forward = SubResource("InputEventKey_vegal")
 key_move_backward = SubResource("InputEventKey_vtdux")
+
+[node name="sounds" type="Node" parent="Settings"]
+script = ExtResource("3_rnwoo")
+player_fly = ExtResource("4_nfqpe")
+player_boost = ExtResource("4_qt7a8")
 
 [node name="Game" type="Node2D" parent="."]
 
@@ -298,6 +306,7 @@ key = "music"
 [node name="Camera2D" type="Camera2D" parent="Game/Player"]
 
 [node name="Sprite2D" type="Sprite2D" parent="Game"]
+visible = false
 material = SubResource("ShaderMaterial_amxoi")
 texture = ExtResource("4_383u0")
 
